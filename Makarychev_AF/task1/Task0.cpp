@@ -12,7 +12,7 @@ class Rac {
             b = 0;
             c = 1;
         }
-        Rac(int a , int b , int c )
+        Rac(int cel , int ch , int z )
         {
             if (c == 0)
             {
@@ -23,11 +23,11 @@ class Rac {
             }
             else
             {
-                int nod = std::gcd(b, c);
-                this->b = b / nod;
-                this->c = c / nod;
-                this->a = a + this->b / this->c;
-                this->b = (this->b % this->c);
+                int nod = std::gcd(ch, z);
+                b = ch / nod;
+                c = z / nod;
+                a = cel + b / c;
+                b = (b % c);
             }
         }
         Rac operator+(const Rac& point1)
@@ -72,7 +72,7 @@ class LongLong {
             LongLong result;
             result.low = low + other.low;
             int carry = 0;
-            if (result.low < low) 
+            if (4294967295-low < other.low)
                 carry = 1;
             result.high = high + other.high + carry;
             return result;
@@ -132,12 +132,14 @@ class Time {
         void set(int h = 0, int m = 0, int s = 0) {
             s = s + m * 60 + h * 3600;
             s %= 86400;
-            this->hour = s / 3600;
-            this->minute = (s % 3600) / 60;
-            this->sec = (s % 3600) % 60;
+            hour = s / 3600;
+            minute = (s % 3600) / 60;
+            sec = (s % 3600) % 60;
         }
-        void output() {
-            std::cout << "hours: " << hour << " minute: " << minute << " sec: " << sec << std::endl;
+        void output(int& h, int& m, int& s) {
+            h = hour;
+            m = minute;
+            s = sec;
         }
         Time time(const Time& t) {
             return Time(abs(hour - t.hour), abs(minute - t.minute), abs(sec - t.sec));
@@ -146,8 +148,12 @@ class Time {
         {
            int s1 = hour * 3600 + minute * 60 + sec;
            int s2 = h * 3600 + m * 60 + s;
-            if (up) this->set(0, 0, s1 + s2);
-            else this->set(0, 0,s1 - s2+86400);
+            if (up) set(0, 0, s1 + s2);
+            else set(0, 0,s1 - s2+86400);
+        }
+        friend std::ostream& operator<<(std::ostream& os, const Time& time) {
+            os << "hours: " << time.hour << " minute: " << time.minute << " sec: " << time.sec;
+            return os;
         }
 };
 class Length {
@@ -165,15 +171,19 @@ class Length {
         void set(double l) {
             leng = l;
         }
-        void output(int mode=0) {
-            if (mode==0) std::cout << "Длина в метрах: " << leng << std::endl;
-            else if (mode == 1) std::cout << "Длина в cm: " << leng*100 << std::endl;
-            else if (mode == 2) std::cout << "Длина в mm: " << leng * 1000 << std::endl;
-            else if (mode == 3) std::cout << "Длина в милях: " << leng *0.000621 << std::endl;
-            else if (mode == 4) std::cout << "Длина в ярдах: " << leng *1.093613 << std::endl;
-            else if (mode == 5) std::cout << "Длина в дюймах: " << leng*39.37 << std::endl;
-            else if (mode == 6) std::cout << "Длина в футах: " << leng *3.28084 << std::endl;
-            else if (mode == 7) std::cout << "Длина в Km: " << leng / 1000.0f << std::endl;
+        void output(double& l,int mode=0) {
+            if (mode==0) l=leng;
+            else if (mode == 1) l=leng*100;//cm
+            else if (mode == 2) l=leng * 1000;//mm
+            else if (mode == 3) l=leng *0.000621;//mili
+            else if (mode == 4) l=leng *1.093613;//ярды
+            else if (mode == 5) l=leng*39.37;//дюйм
+            else if (mode == 6) l=leng *3.28084 ;//фут
+            else if (mode == 7) l=leng / 1000.0f;//km
+        }
+        friend std::ostream& operator<<(std::ostream& os, const Length& L) {
+            os << "Длина в метрах: " << L.leng ;
+            return os;
         }
 };
 class Weight {
@@ -191,15 +201,19 @@ class Weight {
         void set(double w) {
             weg = w;
         }
-        void output(int mode = 0) {
-            if (mode == 0) std::cout << "Вес в кг: " << weg << std::endl;
-            else if (mode == 1) std::cout << "Вес в г: " << weg * 1000 << std::endl;
-            else if (mode == 2) std::cout << "Вес в центнерах: " << weg / 100 << std::endl;
-            else if (mode == 3) std::cout << "Вес в фунтах: " << weg * 2.2046 << std::endl;
-            else if (mode == 4) std::cout << "Вес в унциях: " << weg * 35.273962 << std::endl;
-            else if (mode == 5) std::cout << "Вес в каратах: " << weg * 5000 << std::endl;
-            else if (mode == 6) std::cout << "Вес в пудах: " << weg * 0.061 << std::endl;
-            else if (mode == 7) std::cout << "Вес в тоннах: " << weg / 1000.0f << std::endl;
+        void output(double& w,int mode = 0) {
+            if (mode == 0) w=weg;
+            else if (mode == 1) w=weg * 1000;//g
+            else if (mode == 2) w=weg / 100;//центнер
+            else if (mode == 3) w=weg * 2.2046;//фунт
+            else if (mode == 4) w=weg * 35.273962;//унция
+            else if (mode == 5) w=weg * 5000;//карат
+            else if (mode == 6)w=weg * 0.061;//пуд
+            else if (mode == 7) w=weg / 1000.0f;//тонна
+        }
+        friend std::ostream& operator<<(std::ostream& os, const Weight& W) {
+            os << "Вес в кг: " << W.weg;
+            return os;
         }
 };
 class Temperature {
@@ -217,12 +231,16 @@ public:
     void set(double t) {
         temp= t;
     }
-    void output(int mode = 0) {
-        if (mode == 0) std::cout << "Температура в Цельсия: " << temp << std::endl;
-        else if (mode == 1) std::cout << "Температура в Фаренгейта: " << temp * 9 / 5 + 33.8 << std::endl;
-        else if (mode == 2) std::cout << "Температура в Кельвина: " << temp + 273.15 << std::endl;
-        else if (mode == 3) std::cout << "Температура в Ранкина: " << (temp + 273.15)*9/5 << std::endl;
-        else if (mode == 4) std::cout << "Температура в Реомюра: " << temp * 0.8 << std::endl;    
+    void output(double& t,int mode = 0) {
+        if (mode == 0) t=temp;
+        else if (mode == 1) t=temp * 9 / 5 + 33.8;//F
+        else if (mode == 2) t=temp + 273.15;//K
+        else if (mode == 3) t=(temp + 273.15)*9/5;//Ранкин
+        else if (mode == 4) t=temp * 0.8;//Реомюр
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Temperature& T) {
+        os << "Температура в Цельсия: " << T.temp;
+        return os;
     }
 };
 void main()
@@ -246,44 +264,53 @@ void main()
     std::cout << a << " % " << b << " = " << a % b << std::endl;
     //1.3
     Time t;
+    int h, m, s;
     std::cout << "\n ТРЕТИЙ КЛАСС ВРЕМЯ" << std::endl;
-    t.output();
+    std::cout << t << std::endl;
     t.set(12, 45, 32);
-    t.output();
+    std::cout << t << std::endl;
     Time res = Time(23, 1, 5).time(t);
-    std::cout << "Разница между: 23:1:5 и 12:45:32 = " << std::endl;
-    res.output();
-    std::cout << "Сдвиг вниз 12:45:32  на 15:21:49 = " << std::endl;
+    std::cout << "Разница между: 23:1:5 и 12:45:32 = "<< res << std::endl;
     t.shift(15, 21, 49, false);
-    t.output();
-    std::cout << "Сдвиг вверх на 8:50:49 = " << std::endl;
+    std::cout << "Сдвиг вниз 12:45:32  на 15:21:49 = "<< t << std::endl;
     t.shift(8, 50, 49, true);
-    t.output();
+    std::cout << "Сдвиг вверх на 8:50:49 = "<< t << std::endl;
+    t.output(h,m,s);
+    std::cout << "Часы: "<<h<<"\nМинуты: "<<m<<"\nСекунды: "<< s << std::endl;
     // 1.4
     std::cout << "\n ЧЕТВЕРТЫЙ КЛАСС КОНВЕРТОР ДЛИНЫ" << std::endl;
     Length l;
-    l.output();
+    double leg;
+    std::cout << l << std::endl;
     l.set(173);
+    std::cout << l << std::endl;
     for (int i = 0; i <= 7; i++)
     {
-        l.output(i);
+        l.output(leg,i);
+        std::cout << leg<<" "<< i << std::endl;
     }
     // 1.5
     std::cout << "\n ПЯТЫЙ КЛАСС КОНВЕРТОР ВЕСА" << std::endl;
     Weight w;
-    w.output();
-    w.set(279.8);
+    double weg;
+    std::cout << w << std::endl;
+    w.set(279);
+    std::cout << w << std::endl;
     for (int i = 0; i <= 7; i++)
     {
-        w.output(i);
+        w.output(weg, i);
+        std::cout << weg << " " << i << std::endl;
     }
     // 1.6
     std::cout << "\n ШЕСТОЙ КЛАСС КОНВЕРТОР ТЕМПЕРАТУРЫ" << std::endl;
-    Temperature tem;
-    tem.output();
-    tem.set(36.6);
+    Temperature T;
+    double Temp;
+    std::cout << T << std::endl;
+    T.set(36.6);
+    std::cout << T << std::endl;
     for (int i = 0; i <= 4; i++)
     {
-        tem.output(i);
+        T.output(Temp, i);
+        std::cout << Temp << " " << i << std::endl;
     }
 }
