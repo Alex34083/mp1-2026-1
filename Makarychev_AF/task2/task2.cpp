@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 
 class String {
 	private:
@@ -56,8 +55,8 @@ class String {
 			index %= len;
 			return str[index];
 		}
-		void Len(int& l) {
-			l = len;
+		int Len() {
+			return len;
 		}
 		String substr(int start, int count) const {
 			if (start < 0 || start >= len || count < 0) {
@@ -91,7 +90,7 @@ class String {
 			}
 			return true;
 		}
-		int Count() const {
+		int CountAlp() const {
 			bool used[26] = { false };
 
 			for (int i = 0; i < len; i++) {
@@ -126,6 +125,5 @@ void main() {
 	std::cout << s2 << std::endl;
 	s2.Setstr("Thequickbrownfoxjumpsoverthelazydog");
 	std::cout << s1 <<" "<<s1.isPalindrome()<< std::endl;
-	std::cout << s2 << " " << s2.isPalindrome() << " " <<s2.Count() << std::endl;
-
+	std::cout << s2 << " " << s2.isPalindrome() << " " <<s2.CountAlp() << std::endl;
 }
