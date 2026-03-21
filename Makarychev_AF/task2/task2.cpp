@@ -21,7 +21,7 @@ class String {
 
 		String(char* s) {
 			int i = 0;
-			while ((s[i] != '\0') || (i > 40)) {
+			while ((s[i] != '\0') || (i < 40)) {
 				i++;
 			}
 			len = i;
@@ -38,7 +38,7 @@ class String {
 		}
 		void Setstr(const char* s) {
 			int i = 0;
-			while ((s[i] != '\0') || (i > 40)) {
+			while ((s[i] != '\0') || (i < 40)) {
 				i++;
 			}
 			len = i;
