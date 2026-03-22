@@ -42,6 +42,7 @@ class String {
 				i++;
 			}
 			len = i;
+			delete[] str;
 			str = new char[len + 1];
 			memcpy(str, s, len * sizeof(char));
 			str[len] = '\0';
